@@ -14,10 +14,14 @@ dritare, dyer, grila, tenda, aksesorë, shërbime dhe çdo kombinim i tyre në n
 - Dizajn i qetë gri/i zi; blu vetëm te logoja. Çmimet janë përfundimtare, pa zbërthim TVSH (Apex Frames nuk është subjekt TVSH).
 
 ## Si përdoret
-1. Hape `index.html` (ose faqen e publikuar në GitHub Pages).
-2. Plotëso fushat direkt mbi dokument. Shumat llogariten vetë.
-3. **Eksporto PDF** → në dritaren e printimit zgjidh *Save as PDF* dhe fik "Headers and footers" (Safari: hiq shenjën te *Print headers and footers*).
-4. **Eksporto Word** shkarkon skedarin `.docx`.
+Aplikacioni është formular me 5 hapa; totali live shfaqet anash (në celular, poshtë):
+1. **Klienti** — numri i preventivit, data, vlefshmëria, monedha, klienti dhe projekti.
+2. **Zërat** — seksione (Dritare, Dyer, Grila…) me karta për çdo zë; m², ml, copë ose shërbim.
+3. **Çmimi dhe pagesa** — zbritje, transport, montim dhe plani i pagesës.
+4. **Kushtet** — përfshirja, garancia, termat (të plotësuara me tekstin standard).
+5. **Rishikim dhe eksport** — kontroll i fushave të munguara, pamje paraprake dhe shkarkimi i **PDF** ose **Word (.docx)**.
+
+PDF: te dritarja e printimit zgjidh *Save as PDF* dhe fik "Headers and footers". Me **Ruaj / Hap** ruan ose rihap një preventiv si `.json`; drafti ruhet vetë në shfletues.
 
 ## Publikimi në GitHub Pages
 1. Krijo një repo (p.sh. `oferte`) dhe ngarko të gjithë përmbajtjen e kësaj dosjeje në degën `main`.
@@ -27,9 +31,10 @@ dritare, dyer, grila, tenda, aksesorë, shërbime dhe çdo kombinim i tyre në n
 ## Struktura
 ```
 index.html            faqja kryesore
-css/app.css           dizajni dhe stili i printimit
+css/app.css           dizajni i formularit
+css/doc.css           stili i dokumentit (pamja paraprake dhe PDF)
 js/core.js            llogaritjet, numrat me fjalë, preset-et, teksti standard
-js/app.js             editori (ndërfaqja)
+js/app.js             formulari me hapa dhe dokumenti për PDF
 js/export-docx.js     eksporti në Word
 js/assets.js          logoja (PNG) për Word
 vendor/docx.iife.js   biblioteka docx (MIT), e përfshirë që aplikacioni të punojë pa internet

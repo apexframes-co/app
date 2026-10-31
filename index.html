@@ -2,25 +2,40 @@
 <html lang="sq">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#262626">
 <title>Preventiv — Apex Frames</title>
 <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/doc.css">
 <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
-<div class="toolbar">
-  <span class="brand">Apex Frames · Preventivat</span>
-  <button id="btn-new" title="Fillo një preventiv të ri">Preventiv i ri</button>
-  <button id="btn-open" title="Hap një preventiv të ruajtur (.json)">Hap</button>
-  <button id="btn-save" title="Ruaj preventivin si skedar .json">Ruaj</button>
-  <span class="sp"></span>
-  <label>Monedha <select id="cur"><option>EUR</option><option>ALL</option></select></label>
-  <button id="btn-docx">Eksporto Word</button>
-  <button id="btn-pdf" class="primary">Eksporto PDF</button>
-  <input type="file" id="file" accept=".json,application/json" hidden>
+<div class="app" id="app">
+  <header class="top">
+    <div class="top-in">
+      <div class="brand"><img src="assets/icon.svg" alt=""><div><b>Apex Frames</b><span>Gjeneruesi i preventivave</span></div></div>
+      <div class="top-act">
+        <span class="saved" id="saved" aria-live="polite"></span>
+        <button class="ghost" id="btn-open" title="Hap një preventiv të ruajtur (.json)">Hap</button>
+        <button class="ghost" id="btn-save" title="Ruaj preventivin si skedar .json">Ruaj</button>
+        <button class="ghost" id="btn-new" title="Fillo një preventiv të ri">I ri</button>
+      </div>
+    </div>
+    <nav class="steps" id="steps" aria-label="Hapat"></nav>
+  </header>
+
+  <div class="layout">
+    <main class="form" id="form"></main>
+    <aside class="side" id="side" aria-label="Përmbledhja"></aside>
+  </div>
+
+  <div class="bar" id="bar"></div>
 </div>
-<div class="hint">Kliko mbi çdo fushë për ta plotësuar. Shumat, m², totali, parapagimi dhe pagesa finale llogariten vetë. Për PDF zgjidh <b>Save as PDF</b> në dritaren e printimit (Destination → Save as PDF; fikë "Headers and footers"). Preventivi ruhet automatikisht në këtë shfletues.</div>
-<main class="page" id="doc"></main>
+
+<div id="printroot"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<dialog id="dlg"><form method="dialog"><p id="dlg-msg"></p><div class="dlg-act"><button value="no" class="ghost">Anulo</button><button value="yes" class="primary" id="dlg-ok">Po</button></div></form></dialog>
+<input type="file" id="file" accept=".json,application/json" hidden>
 
 <script src="js/core.js"></script>
 <script src="js/assets.js"></script>

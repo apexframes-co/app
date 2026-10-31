@@ -1,0 +1,60 @@
+/* Apex Frames — stili i dokumentit të preventivit (pamja paraprake dhe PDF). Paletë gri/e zezë; blu vetëm te logoja. */
+:root{ --ink:#262626; --text:#555; --soft:#777; --mute:#888; --line:#ccc; --tile:#F4F3F0; --dark:#262626 }
+@page{ size:A4; margin:12mm 0 14mm 0; @bottom-right{ content:"Faqe " counter(page) " / " counter(pages); font:8pt "Times New Roman",serif; color:#888; margin-right:16mm } }
+
+.page{ width:210mm; min-height:297mm; background:#fff; padding:11mm 16mm 10mm; display:flex; flex-direction:column; color:var(--text); font-family:"Times New Roman","Liberation Serif",Times,serif; font-size:10.5pt; line-height:1.3; box-sizing:border-box }
+.page *{ box-sizing:border-box }
+.page .hd{ display:flex; justify-content:space-between; gap:6mm; padding-bottom:5mm; border-bottom:2.2pt solid #1f1f1f }
+.page .brandbox{ display:flex; gap:5mm; align-items:flex-start }
+.page .brandbox img{ height:15mm; margin-top:1mm }
+.page .bn{ font-size:24pt; color:#2b2b2b; line-height:1 }
+.page .bs{ font-size:9.5pt; color:var(--soft); margin-top:2.5mm }
+.page .bc{ font-size:9.5pt; color:var(--soft); margin-top:2mm }
+.page .meta{ font-size:9.5pt; color:var(--soft); line-height:1.75; min-width:62mm }
+.page .dt{ font-size:14pt; color:var(--ink); text-transform:uppercase; letter-spacing:.5pt; line-height:1.15; margin-bottom:1mm; white-space:nowrap }
+.page .boxes{ display:flex; gap:3mm; margin-top:5mm }
+.page .box{ flex:1; background:var(--tile); padding:3.5mm 4.5mm 4mm; color:#2b2b2b }
+.page .lab{ font-size:8.5pt; letter-spacing:1pt; text-transform:uppercase; color:var(--mute); margin-bottom:2mm }
+.page .row{ margin-bottom:1.5mm }
+.page .sec{ margin-top:5mm }
+.page .sec-h{ font-size:8.5pt; letter-spacing:1pt; text-transform:uppercase; color:var(--mute); margin-bottom:1.5mm; break-after:avoid }
+.page table.items{ width:100%; border-collapse:collapse; font-size:9.5pt; table-layout:fixed }
+.page .items th{ background:var(--dark); color:#e8e8e8; font-weight:normal; text-align:left; padding:1.8mm 1.6mm; font-size:8.5pt }
+.page .items td{ padding:1.4mm 1.6mm; color:#2b2b2b; vertical-align:top; border-bottom:.5pt solid #e4e4e1 }
+.page .items tr{ break-inside:avoid }
+.page .items thead{ display:table-header-group }
+.page .items .r{ text-align:right }
+.page .items .c{ text-align:center }
+.page .items .note{ font-size:8.5pt; color:var(--soft); font-style:italic; margin-top:.4mm }
+.page .items tr.tt td{ color:#999; font-size:9pt; border-top:.5pt solid var(--line); border-bottom:.5pt solid #ddd; text-transform:uppercase; padding-top:1.6mm; padding-bottom:1.6mm }
+.page .items td.nt{ text-transform:none }
+.page .h2{ font-size:8.5pt; letter-spacing:1pt; text-transform:uppercase; color:var(--mute); margin:5mm 0 1.5mm; break-after:avoid }
+.page .blk{ break-inside:avoid }
+.page .tiles{ display:flex; gap:2.2mm; margin-bottom:2.2mm }
+.page .tile{ flex:1 1 0; min-width:0; background:var(--tile); padding:2.4mm 3mm; break-inside:avoid }
+.page .tile .l{ font-size:8pt; color:var(--mute) }
+.page .tile .v{ font-size:11pt; color:#2b2b2b; margin-top:.8mm; white-space:nowrap }
+.page .tile .sub{ font-size:8pt; color:var(--mute); margin-top:.4mm }
+.page .totbar{ display:flex; justify-content:space-between; align-items:center; background:var(--dark); color:#fff; padding:3mm 4mm; break-inside:avoid }
+.page .totbar .l{ font-size:9pt; letter-spacing:.8pt; text-transform:uppercase; color:#ccc }
+.page .totbar .v{ font-size:16pt }
+.page .words{ font-size:9pt; color:var(--mute); margin:1.2mm 0 0 }
+.page .pay .tile{ border-left:2.2pt solid var(--dark) }
+.page .pay .tile .when{ font-size:8.5pt; color:var(--soft) }
+.page .pay .tile .v{ font-size:13pt; font-weight:bold; margin-top:1mm }
+.page .pay .tile .w{ font-size:8pt; color:var(--mute); margin-top:.6mm }
+.page .cols{ display:flex; gap:3mm; margin-top:4mm }
+.page .cols>div{ flex:1; background:var(--tile); padding:3mm 4mm; font-size:9.5pt; break-inside:avoid; color:#2b2b2b; line-height:1.35 }
+.page .warr{ margin-top:4mm; background:var(--tile); border-left:2.2pt solid var(--dark); padding:2.8mm 4.5mm; color:#333; font-size:9pt; break-inside:avoid }
+.page .warr .wt{ font-size:11pt; color:var(--ink); margin-bottom:1.2mm }
+.page .terms{ font-size:9pt }
+.page .terms>div{ margin-bottom:.9mm; line-height:1.28; padding-left:5mm; position:relative }
+.page .terms>div i{ position:absolute; left:0; font-style:normal }
+.page .notes{ margin-top:3mm; font-size:9pt; white-space:pre-wrap }
+.page .sig{ display:flex; gap:10mm; margin-top:5mm; color:var(--text); break-inside:avoid }
+.page .sig>div{ flex:1 }
+.page .sl{ border-bottom:.5pt solid #aaa; height:9mm }
+.page .sm{ display:flex; gap:6mm; font-size:9pt; margin-top:1.4mm; color:var(--mute) }
+.page .ft{ margin-top:auto; padding-top:4mm; break-inside:avoid }
+.page .ft>div{ border-top:.5pt solid var(--line); padding-top:2.2mm; display:flex; justify-content:space-between; font-size:8.5pt; color:var(--mute) }
+.page .ft b{ font-weight:normal; color:var(--ink) }

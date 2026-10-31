@@ -1,0 +1,144 @@
+/* Apex Frames — Gjeneruesi i preventivave. Paletë gri/e zezë; blu vetëm te logoja. */
+:root{
+  --ink:#262626; --text:#555; --soft:#777; --mute:#888; --line:#ccc; --tile:#F4F3F0; --dark:#262626;
+}
+@page{ size:A4; margin:12mm 0 14mm 0; @bottom-right{ content:"Faqe " counter(page) " / " counter(pages); font:8pt "Times New Roman",serif; color:#888; margin-right:16mm } }
+*{ box-sizing:border-box }
+html{ background:#e6e6e3 }
+body{ margin:0; font-family:"Times New Roman","Liberation Serif",Times,serif; color:var(--text); font-size:10.5pt; line-height:1.3 }
+
+/* ---------- shiriti i veglave (vetëm në ekran) ---------- */
+.toolbar{ position:sticky; top:0; z-index:20; background:var(--dark); color:#eee; font:13px/1.2 -apple-system,"Segoe UI",Arial,sans-serif;
+  display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:9px 14px }
+.toolbar .brand{ font-weight:600; letter-spacing:.3px; margin-right:6px }
+.toolbar .sp{ flex:1 }
+.toolbar button,.toolbar select{ font:inherit; padding:6px 12px; border:1px solid #555; background:#333; color:#eee; cursor:pointer; border-radius:3px }
+.toolbar button:hover{ background:#444 }
+.toolbar button.primary{ background:#fff; color:#111; border-color:#fff }
+.toolbar button.primary:hover{ background:#ddd }
+.hint{ max-width:210mm; margin:10px auto 0; font:12.5px/1.4 -apple-system,"Segoe UI",Arial,sans-serif; color:#777; padding:0 4px }
+
+/* ---------- faqja ---------- */
+.page{ width:210mm; min-height:297mm; margin:10px auto 30px; background:#fff; padding:11mm 16mm 10mm; display:flex; flex-direction:column; box-shadow:0 1px 8px rgba(0,0,0,.12) }
+
+/* fusha të redaktueshme */
+[contenteditable]{ outline:none; border-bottom:1px dotted #bdbdbd; min-width:8mm; white-space:pre-wrap; word-break:break-word }
+[contenteditable]:focus,input:focus,select:focus{ background:#f3f3f1; border-bottom-color:var(--ink) }
+[contenteditable]:empty:before{ content:attr(data-ph); color:#c2c2c2 }
+input,select{ font:inherit; color:inherit; background:transparent; border:0; border-bottom:1px dotted #bdbdbd; border-radius:0; padding:0 1px; outline:none; min-width:0; width:100% }
+select{ appearance:none; -webkit-appearance:none; cursor:pointer }
+input:disabled{ border-bottom-color:transparent; background:transparent; color:transparent }
+
+/* koka */
+.hd{ display:flex; justify-content:space-between; gap:6mm; padding-bottom:5mm; border-bottom:2.2pt solid #1f1f1f }
+.brandbox{ display:flex; gap:5mm; align-items:flex-start }
+.brandbox img{ height:15mm; margin-top:1mm }
+.bn{ font-size:24pt; color:#2b2b2b; line-height:1 }
+.bs{ font-size:9.5pt; color:var(--soft); margin-top:2.5mm }
+.bc{ font-size:9.5pt; color:var(--soft); margin-top:2mm }
+.meta{ text-align:left; font-size:9.5pt; color:var(--soft); line-height:1.75; min-width:62mm }
+.dt{ font-size:14pt; color:var(--ink); text-transform:uppercase; letter-spacing:.5pt; line-height:1.15; margin-bottom:1mm; white-space:nowrap; display:flex; align-items:baseline; gap:1.5mm }
+.dt [contenteditable]{ flex:1; min-width:30mm }
+.mrow{ display:flex; gap:1.5mm; align-items:baseline }
+.mrow [contenteditable]{ flex:1 }
+.mrow input{ width:9mm; text-align:center }
+
+.boxes{ display:flex; gap:3mm; margin-top:5mm }
+.box{ flex:1; background:var(--tile); padding:3.5mm 4.5mm 4mm; color:#2b2b2b }
+.lab{ font-size:8.5pt; letter-spacing:1pt; text-transform:uppercase; color:var(--mute); margin-bottom:2mm }
+.row{ display:flex; gap:2mm; align-items:baseline; margin-bottom:1.5mm }
+.row>span{ white-space:nowrap }
+.row [contenteditable]{ flex:1 }
+
+/* seksionet */
+.sec{ margin-top:5mm; break-inside:auto }
+.sec-h{ display:flex; align-items:baseline; gap:3mm; margin-bottom:1.5mm }
+.sec-h .st{ font-size:8.5pt; letter-spacing:1pt; text-transform:uppercase; color:var(--mute); min-width:30mm }
+.btn-s{ font:11px -apple-system,Arial,sans-serif; border:0; background:none; color:#aaa; cursor:pointer; padding:0 3px }
+.btn-s:hover{ color:#000 }
+table.items{ width:100%; border-collapse:collapse; font-size:9.5pt; table-layout:fixed }
+.items th{ background:var(--dark); color:#e8e8e8; font-weight:normal; text-align:left; padding:1.8mm 1.6mm; font-size:8.5pt }
+.items td{ padding:1.4mm 1.6mm; color:#2b2b2b; vertical-align:top; border-bottom:.5pt solid #e4e4e1 }
+.items tr{ break-inside:avoid }
+.items thead{ display:table-header-group }
+.items td.r,.items th.r{ text-align:right }
+.items td.c,.items th.c{ text-align:center }
+.items td input{ text-align:inherit }
+.items td.c input{ text-align:center }
+.items td.r input{ text-align:right }
+.items .note{ font-size:8.5pt; color:var(--soft); font-style:italic; margin-top:.4mm; border-bottom-color:transparent }
+.items .note:empty:before{ content:attr(data-ph) }
+.items td.u select{ font-size:9pt; padding:0 }
+.items tr.tt td{ color:#999; font-size:9pt; border-top:.5pt solid var(--line); border-bottom:.5pt solid #ddd; text-transform:uppercase; padding-top:1.6mm; padding-bottom:1.6mm }
+.items td.act{ border-bottom-color:transparent; white-space:nowrap; text-align:right; padding-left:0; padding-right:0 }
+.add{ margin-top:1.5mm; font:12px -apple-system,Arial,sans-serif; border:1px dashed #aaa; background:none; padding:3px 10px; cursor:pointer; color:#555 }
+.add:hover{ background:#f3f3f1 }
+.addsec{ margin-top:4mm; display:flex; gap:6px; align-items:center; font:12px -apple-system,Arial,sans-serif }
+.addsec select{ width:auto; border:1px solid #bbb; padding:3px 6px; border-radius:0 }
+
+/* përmbledhja */
+.h2{ font-size:8.5pt; letter-spacing:1pt; text-transform:uppercase; color:var(--mute); margin:5mm 0 1.5mm }
+.tiles{ display:flex; gap:2.2mm; margin-bottom:2.2mm }
+.tile{ flex:1 1 0; min-width:0; background:var(--tile); padding:2.4mm 3mm; break-inside:avoid }
+.tile .l{ font-size:8pt; color:var(--mute); display:flex; gap:2mm; align-items:baseline; white-space:nowrap }
+.tile .v{ font-size:11pt; color:#2b2b2b; margin-top:.8mm; display:flex; gap:1.2mm; align-items:baseline; white-space:nowrap }
+.tile .v input{ flex:1; font-size:11pt }
+.tile .l select{ width:auto; font-size:8pt; color:var(--mute) }
+.tile .sub{ font-size:8pt; color:var(--mute); margin-top:.4mm }
+.totbar{ display:flex; justify-content:space-between; align-items:center; background:var(--dark); color:#fff; padding:3mm 4mm; break-inside:avoid }
+.totbar .l{ font-size:9pt; letter-spacing:.8pt; text-transform:uppercase; color:#ccc }
+.totbar .v{ font-size:16pt }
+.words{ font-size:9pt; color:var(--mute); margin:1.2mm 0 0 }
+
+.pay .tile{ border-left:2.2pt solid var(--dark) }
+.pay .tile .l{ white-space:normal; flex-wrap:wrap }
+.pay .tile .l [contenteditable]{ min-width:10mm }
+.pay .tile .pc{ display:flex; align-items:baseline; gap:.5mm }
+.pay .tile .pc input{ width:9mm; text-align:center; font-size:8.5pt }
+.pay .tile .when{ font-size:8.5pt; color:var(--soft) }
+.pay .tile .v{ font-size:13pt; font-weight:bold; margin-top:1mm }
+.pay .tile .w{ font-size:8pt; color:var(--mute); margin-top:.6mm }
+.paytools{ display:flex; gap:8px; align-items:center; font:12px -apple-system,Arial,sans-serif; margin:1mm 0 0 }
+.paytools select{ width:auto; border:1px solid #bbb; padding:3px 6px }
+
+/* përfshirja */
+.cols{ display:flex; gap:3mm; margin-top:4mm }
+.cols>div{ flex:1; background:var(--tile); padding:3mm 4mm; font-size:9.5pt; break-inside:avoid }
+.cols .lab{ margin-bottom:1.2mm }
+.cols [contenteditable]{ color:#2b2b2b; line-height:1.35 }
+.warr{ margin-top:4mm; background:var(--tile); border-left:2.2pt solid var(--dark); padding:2.8mm 4.5mm; color:#333; font-size:9pt; break-inside:avoid }
+.warr .wt{ font-size:11pt; color:var(--ink); margin-bottom:1.2mm }
+.terms{ font-size:9pt; counter-reset:t }
+.terms>div,.terms section>div{ counter-increment:t; margin-bottom:.9mm; line-height:1.28; padding-left:5mm; position:relative }
+.terms>div:before,.terms section>div:before{ content:counter(t) "."; position:absolute; left:0 }
+.terms section{ display:block }
+.notes{ margin-top:3mm; font-size:9pt }
+.sig{ display:flex; gap:10mm; margin-top:5mm; color:var(--text); break-inside:avoid }
+.sig>div{ flex:1 }
+.sl{ border-bottom:.5pt solid #aaa; height:9mm }
+.sm{ display:flex; gap:6mm; font-size:9pt; margin-top:1.4mm; color:var(--mute) }
+.sig .nm{ display:flex; gap:2mm; align-items:baseline }
+.sig .nm [contenteditable]{ flex:1 }
+.ft{ margin-top:auto; padding-top:4mm; break-inside:avoid }
+.ft>div{ border-top:.5pt solid var(--line); padding-top:2.2mm; display:flex; justify-content:space-between; font-size:8.5pt; color:var(--mute) }
+.ft b{ font-weight:normal; color:var(--ink) }
+.only-print{ display:none }
+
+/* ---------- printimi / PDF ---------- */
+@media print{
+  html{ background:#fff }
+  .toolbar,.hint,.add,.addsec,.btn-s,.act,.paytools,.noprint{ display:none !important }
+  .page{ margin:0; width:auto; min-height:0; padding:0 16mm; box-shadow:none; display:block }
+  [contenteditable],input,select{ border-bottom:0 !important; background:transparent !important }
+  [contenteditable]:empty:before{ content:'' }
+  select{ appearance:none; -webkit-appearance:none }
+  .only-print{ display:block }
+  *{ -webkit-print-color-adjust:exact; print-color-adjust:exact }
+  .sec{ break-inside:auto }
+  .sec-h{ break-after:avoid }
+}
+
+.blk{ break-inside:avoid }
+.h2{ break-after:avoid }
+.items td.nt{ text-transform:none !important }
+.mrow input{ width:7mm }

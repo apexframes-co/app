@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preventiv — Apex Frames</title>
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div class="toolbar">
+  <span class="brand">Apex Frames · Preventivat</span>
+  <button id="btn-new" title="Fillo një preventiv të ri">Preventiv i ri</button>
+  <button id="btn-open" title="Hap një preventiv të ruajtur (.json)">Hap</button>
+  <button id="btn-save" title="Ruaj preventivin si skedar .json">Ruaj</button>
+  <span class="sp"></span>
+  <label>Monedha <select id="cur"><option>EUR</option><option>ALL</option></select></label>
+  <button id="btn-docx">Eksporto Word</button>
+  <button id="btn-pdf" class="primary">Eksporto PDF</button>
+  <input type="file" id="file" accept=".json,application/json" hidden>
+</div>
+<div class="hint">Kliko mbi çdo fushë për ta plotësuar. Shumat, m², totali, parapagimi dhe pagesa finale llogariten vetë. Për PDF zgjidh <b>Save as PDF</b> në dritaren e printimit (Destination → Save as PDF; fikë "Headers and footers"). Preventivi ruhet automatikisht në këtë shfletues.</div>
+<main class="page" id="doc"></main>
+
+<script src="js/core.js"></script>
+<script src="js/assets.js"></script>
+<script src="vendor/docx.iife.js"></script>
+<script src="js/export-docx.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

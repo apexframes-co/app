@@ -10,15 +10,17 @@
 <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
-<div class="app" id="app">
+<div id="home" class="home" hidden></div>
+
+<div class="app" id="app" hidden>
   <header class="top">
     <div class="top-in">
-      <div class="brand"><img src="assets/icon.svg" alt=""><div><b>Apex Frames</b><span>Gjeneruesi i preventivave</span></div></div>
+      <div class="brand"><button class="ghost back" id="btn-back" title="Kthehu te arkivi" aria-label="Kthehu te arkivi">‹ Arkivi</button><img src="assets/icon.svg" alt=""><div><b>Apex Frames</b><span id="brand-sub"></span></div></div>
       <div class="top-act">
         <span class="saved" id="saved" aria-live="polite"></span>
-        <button class="ghost" id="btn-open" title="Hap një preventiv të ruajtur (.json)">Hap</button>
-        <button class="ghost" id="btn-save" title="Ruaj preventivin si skedar .json">Ruaj</button>
-        <button class="ghost" id="btn-new" title="Fillo një preventiv të ri">I ri</button>
+        <select id="q-status" class="pill" aria-label="Statusi i preventivit"></select>
+        <button class="ghost" id="btn-open" title="Hap një preventiv (.json) si preventiv të ri">Hap</button>
+        <button class="ghost" id="btn-save" title="Shkarko këtë preventiv si skedar .json">Ruaj</button>
       </div>
     </div>
     <nav class="steps" id="steps" aria-label="Hapat"></nav>
@@ -38,9 +40,11 @@
 <input type="file" id="file" accept=".json,application/json" hidden>
 
 <script src="js/core.js"></script>
+<script src="js/store.js"></script>
 <script src="js/assets.js"></script>
 <script src="vendor/docx.iife.js"></script>
 <script src="js/export-docx.js"></script>
 <script src="js/app.js"></script>
+<script src="js/archive.js"></script>
 </body>
 </html>

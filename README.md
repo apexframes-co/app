@@ -13,6 +13,14 @@ dritare, dyer, grila, tenda, aksesorë, shërbime dhe çdo kombinim i tyre në n
 - **Ruaj / Hap** preventivin si skedar `.json`; drafti ruhet automatikisht në shfletues.
 - Dizajn i qetë gri/i zi; blu vetëm te logoja. Çmimet janë përfundimtare, pa zbërthim TVSH (Apex Frames nuk është subjekt TVSH).
 
+## Arkivi (faqja kryesore)
+- Çdo preventiv ruhet vetë në arkiv dhe renditet sipas **vitit dhe muajit** (sipas datës së preventivit), me totalet për çdo vit/muaj.
+- **Foldera për kompanitë**: çdo kompani ka kod (p.sh. `DRIT`), kontakt, adresë dhe shënime për bashkëpunimin. Preventivi i ri në një folder plotëson vetë klientin.
+- **Numërimi automatik** `AF-VVVV-KOD-NR` (p.sh. `AF-2026-DRIT-01`, `-02`…), pa përsëritje; nëse shkruan një numër që ekziston, shfaqet paralajmërim.
+- **Statuset e procesit**: Draft → Dërguar → Pranuar → Në prodhim → Montuar → Mbyllur (ose Refuzuar), të ndryshueshme direkt nga lista.
+- Kërkim sipas numrit, klientit ose projektit; filtër sipas statusit dhe folderit.
+- **Kopje rezervë / Rikthe**: arkivi ruhet në shfletuesin ku punohet. Për ta kaluar në pajisje tjetër (ose si mbrojtje) shkarko kopjen rezervë dhe rikthe e atje; bashkimi nuk fshin asgjë.
+
 ## Si përdoret
 Aplikacioni është formular me 5 hapa; totali live shfaqet anash (në celular, poshtë):
 1. **Klienti** — numri i preventivit, data, vlefshmëria, monedha, klienti dhe projekti.
@@ -34,6 +42,8 @@ index.html            faqja kryesore
 css/app.css           dizajni i formularit
 css/doc.css           stili i dokumentit (pamja paraprake dhe PDF)
 js/core.js            llogaritjet, numrat me fjalë, preset-et, teksti standard
+js/store.js           arkivi: foldera, numërimi, statuset, grupimi
+js/archive.js         faqja kryesore (arkivi) dhe routeri
 js/app.js             formulari me hapa dhe dokumenti për PDF
 js/export-docx.js     eksporti në Word
 js/assets.js          logoja (PNG) për Word

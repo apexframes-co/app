@@ -2,9 +2,7 @@
 (function () {
   'use strict';
   const A = window.AF;
-  const KEY = 'af_preventiv_draft_v1';
-  const STEP_KEY = 'af_preventiv_step_v1';
-  const $ = (s, r) => (r || document).querySelector(s);
+    const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => [...(r || document).querySelectorAll(s)];
   const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   const clone = o => JSON.parse(JSON.stringify(o));
@@ -20,22 +18,11 @@
   ];
 
   /* ---------- gjendja ---------- */
-  let S = load();
-  let C = A.compute(S);
-  let step = 0;
-  try { step = Math.min(STEPS.length - 1, Math.max(0, parseInt(sessionStorage.getItem(STEP_KEY), 10) || 0)); } catch (e) { /* injoro */ }
-
-  function load() {
-    const base = A.defaultState();
-    try {
-      const raw = localStorage.getItem(KEY);
-      if (raw) return Object.assign(base, JSON.parse(raw));
-    } catch (e) { /* ruajtja lokale mund të mungojë */ }
-    return base;
-  }
+  const ST = window.AFStore;
+  let S = null, Q = null, C = null, step = 0;
   let saveTimer = null;
   function persist() {
-    try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* injoro */ }
+    if (Q) ST.saveQuote(Q.id, S);
     const el = $('#saved');
     if (el) { el.textContent = '✓ Ruajtur'; el.classList.add('on'); clearTimeout(saveTimer); saveTimer = setTimeout(() => { el.textContent = 'Ruhet automatikisht'; el.classList.remove('on'); }, 1500); }
   }
@@ -67,7 +54,8 @@
     return `
     <section class="card"><h2>Preventivi</h2>
       <div class="grid">
-        ${field('meta.ref', 'Numri i preventivit', { cls: 's2', ph: 'AF-2026-KLIENT-01', hint: 'Formati AF-VVVV-KLIENT-NR' })}
+        ${field('meta.ref', 'Numri i preventivit', { cls: 's2', ph: 'AF-2026-KLIENT-01', hint: '<b class="warn" data-out="refwarn"></b> Jepet vetë nga arkivi; mund ta ndryshosh.' })}
+        <div class="f s2"><label for="q_folder">Folderi (kompania)</label><div class="wrap"><select id="q_folder" data-qfolder>${'<option value="">— pa folder —</option>' + ST.folders().map(f => `<option value="${f.id}" ${Q && Q.folderId === f.id ? 'selected' : ''}>${esc(f.name)}</option>`).join('')}</select></div><span class="hint">Preventivi ruhet në arkiv nën këtë kompani.</span></div>
         ${field('meta.date', 'Data', { cls: 's2', date: true })}
         ${field('meta.validDays', 'Vlefshmëria', { cls: 's2', mode: 'numeric', suffix: 'ditë', hint: 'Vlen deri më <b data-out="valid"></b>' })}
         <div class="f s2"><span class="lbl">Monedha</span>${seg([['EUR', 'EUR (€)'], ['ALL', 'ALL (Lekë)']], S.cur, 'cur')}</div>
@@ -179,6 +167,7 @@
     S.sections.forEach((sec, si) => sec.items.forEach((it, ii) => items.push({ sec, it, si, ii })));
     const L = [];
     L.push({ ok: has(S.client.name), t: 'Emri i klientit', s: 0 });
+    L.push({ ok: !ST.refTaken(S.meta.ref, Q && Q.id), t: 'Numri i preventivit nuk përsëritet në arkiv', s: 0 });
     L.push({ ok: has(S.meta.ref) && !/^AF-\d{4}-?$/.test(S.meta.ref.trim()), t: 'Numri i preventivit', s: 0 });
     L.push({ ok: items.length > 0 && items.every(x => has(x.it.desc)), t: 'Çdo zë ka përshkrim', s: 1 });
     L.push({ ok: items.every(x => A.num(x.it.p) > 0), t: 'Çdo zë ka çmim', s: 1 });
@@ -188,9 +177,9 @@
   }
   const stepOk = i => {
     const L = checks();
-    if (i === 0) return L[0].ok && L[1].ok;
-    if (i === 1) return L[2].ok && L[3].ok && L[4].ok;
-    if (i === 2) return L[5].ok;
+    if (i === 0) return L[0].ok && L[1].ok && L[2].ok;
+    if (i === 1) return L[3].ok && L[4].ok && L[5].ok;
+    if (i === 2) return L[6].ok;
     return true;
   };
 
@@ -199,6 +188,7 @@
     return `
     ${bad.length ? `<div class="banner">Ka ${bad.length} ${bad.length === 1 ? 'gjë' : 'gjëra'} për të kontrolluar para se ta dërgosh preventivin. Mund ta eksportosh edhe kështu.</div>` : '<div class="banner ok">✓ Gjithçka është e plotësuar. Preventivi është gati për eksport.</div>'}
     <section class="card"><h2>Kontrolli</h2><ul class="check">${L.map(x => `<li class="${x.ok ? '' : 'bad'}"><span class="ic">${x.ok ? '✓' : '!'}</span><span class="t">${x.t}</span>${x.ok ? '' : `<button type="button" class="secondary" data-act="goto" data-v="${x.s}">Plotëso</button>`}</li>`).join('')}</ul></section>
+    <section class="card"><h2>Procesi</h2><div class="grid"><div class="f s2"><label for="q_status">Statusi i preventivit</label><div class="wrap"><select id="q_status" data-qstatus>${ST.STATUSES.map(x => `<option value="${x.k}" ${Q && Q.status === x.k ? 'selected' : ''}>${x.l}</option>`).join('')}</select></div><span class="hint">Përditësoje sa herë ndryshon procesi (dërguar, pranuar, në prodhim…). Duket në arkiv.</span></div></div></section>
     <section class="card"><h2>Eksporto</h2><div class="export">
       <button type="button" class="primary" data-act="pdf">Shkarko PDF<small>Hapet dritarja e printimit → Save as PDF</small></button>
       <button type="button" class="dark" data-act="docx">Shkarko Word (.docx)<small>Dokument i redaktueshëm</small></button></div>
@@ -326,6 +316,7 @@
     outAll('extras', ex ? A.money(ex, cur) : 'E përfshirë');
     outAll('total', A.money(C.total, cur)); outAll('totw', C.totalWords);
     outAll('valid', C.valid);
+    outAll('refwarn', ST.refTaken(S.meta.ref, Q && Q.id) ? '⚠ Ky numër ekziston tashmë në arkiv.' : '');
     outAll('metaRef', 'Nr. ' + (S.meta.ref || '—'));
     outAll('metaClient', S.client.name || 'Pa klient');
     S.pay.forEach((s, i) => {
@@ -350,7 +341,6 @@
 
   function go(n, focus) {
     step = Math.max(0, Math.min(STEPS.length - 1, n));
-    try { sessionStorage.setItem(STEP_KEY, step); } catch (e) { /* injoro */ }
     render(focus);
     window.scrollTo({ top: 0, behavior: 'auto' });
   }
@@ -392,7 +382,7 @@
 
   document.addEventListener('click', async e => {
     const b = e.target.closest('[data-act]');
-    if (!b) return;
+    if (!b || !Q || !b.closest('#app')) return;
     const a = b.dataset.act, v = b.dataset.v, si = +b.dataset.si, ii = +b.dataset.ii, i = +b.dataset.i;
     const sec = S.sections[si];
     let focus = null;
@@ -421,25 +411,53 @@
     persist(); render(focus);
   });
 
-  $('#btn-new').addEventListener('click', async () => {
-    if (await confirmDlg('Të fillohet një preventiv i ri? Ndryshimet aktuale do të humbasin. Ruaje më parë me “Ruaj” nëse të duhet.', 'Fillo të ri')) {
-      S = A.defaultState(); persist(); go(0); toast('Preventiv i ri');
-    }
-  });
   $('#btn-save').addEventListener('click', () => { download(new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' }), fname('json')); toast('✓ Preventivi u ruajt si skedar'); });
   $('#btn-open').addEventListener('click', () => $('#file').click());
   $('#file').addEventListener('change', e => {
     const f = e.target.files[0]; if (!f) return;
     const r = new FileReader();
     r.onload = () => {
-      try { S = Object.assign(A.defaultState(), JSON.parse(r.result)); persist(); go(0); toast('✓ Preventivi u hap'); }
+      try { const q = ST.importState(JSON.parse(r.result), Q && Q.folderId); location.hash = '#/q/' + q.id; }
       catch (err) { toast('Skedari JSON nuk lexohet.'); }
     };
     r.readAsText(f); e.target.value = '';
   });
+  form.addEventListener('change', e => {
+    const el = e.target;
+    if (el.dataset.qstatus !== undefined) { ST.setStatus(Q.id, el.value); Q = ST.getQuote(Q.id); syncTop(); toast('Statusi: ' + ST.statusLabel(el.value)); }
+    else if (el.dataset.qfolder !== undefined) {
+      const f = ST.getFolder(el.value);
+      ST.setFolder(Q.id, el.value); Q = ST.getQuote(Q.id);
+      if (f) {
+        if (!has(S.client.name)) { S.client.name = f.name; S.client.address = S.client.address || f.address || ''; S.client.contact = S.client.contact || f.contact || ''; }
+        if (!S.meta.ref || S.meta.ref === Q.autoRef) { Q.autoRef = ST.nextRef(f.code, new Date().getFullYear(), Q.id); S.meta.ref = Q.autoRef; }
+      }
+      persist(); syncTop(); render();
+    }
+  });
+  $('#btn-back').addEventListener('click', () => { location.hash = Q && Q.folderId ? '#/f/' + Q.folderId : '#/'; });
+  function syncTop() {
+    const f = Q && ST.getFolder(Q.folderId);
+    $('#brand-sub').textContent = f ? f.name : 'Pa folder';
+    const sel = $('#q-status');
+    if (Q) { sel.innerHTML = ST.STATUSES.map(x => `<option value="${x.k}" ${Q.status === x.k ? 'selected' : ''}>${x.l}</option>`).join(''); sel.className = 'pill st-' + Q.status; }
+  }
+  $('#q-status').addEventListener('change', e => { ST.setStatus(Q.id, e.target.value); Q = ST.getQuote(Q.id); syncTop(); toast('Statusi: ' + ST.statusLabel(Q.status)); });
   window.addEventListener('resize', fitPreview);
 
-  $('#saved').textContent = 'Ruhet automatikisht';
-  render();
+  /* hapet nga routeri (archive.js) */
+  window.AFEditor = {
+    open: function (id) {
+      Q = ST.getQuote(id);
+      if (!Q) return false;
+      S = Q.state = Object.assign(A.defaultState(), Q.state);
+      C = A.compute(S); step = 0;
+      $('#saved').textContent = 'Ruhet automatikisht';
+      syncTop(); render();
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      return true;
+    },
+    close: function () { Q = null; }
+  };
   window.__AF_STATE = () => S; // për teste
 })();

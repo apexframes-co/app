@@ -1,0 +1,8 @@
+{
+  "name": "apex-preventiv-app",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Apex Frames — preventivat dhe certifikatat e garancisë",
+  "scripts": { "dev": "node dev/server.mjs", "test": "node dev/test-cert.mjs" },
+  "dependencies": { "@netlify/blobs": "^8.1.0" }
+}

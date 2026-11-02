@@ -1,0 +1,25 @@
+import assert from 'node:assert/strict';
+import { handle, maskName, validUntil, START_NO } from '../netlify/functions/cert-core.mjs';
+const mem = new Map();
+const store = { async get(k) { return mem.get(k) || null; }, async set(k, o, opt) { if (opt && opt.onlyIfNew && mem.has(k)) return false; mem.set(k, o); return true; }, async list(p) { return [...mem.keys()].filter(k => k.startsWith(p)); } };
+const env = { CERT_ADMIN_TOKEN: 'secret' };
+const req = (method, url, body, auth) => ({ method, url, headers: { get: h => (h === 'authorization' ? auth : null) }, json: async () => body });
+const yr = new Date().getUTCFullYear();
+
+let r = await handle(req('POST', '/api/cert', { action: 'issue', name: 'A', product: 'B', purchaseDate: '01/01/2026' }), store, env); assert.equal(r.status, 401);
+r = await handle(req('POST', '/api/cert', { action: 'issue', name: 'A', product: 'B', purchaseDate: '01/01/2026' }, 'Bearer wrong'), store, env); assert.equal(r.status, 401);
+r = await handle(req('POST', '/api/cert', { action: 'issue', name: 'Test Klient SHPK', product: 'Dritare uPVC', purchaseDate: '31/10/2026', years: 5 }, 'Bearer secret'), store, env);
+assert.equal(r.status, 201); assert.equal(r.body.nr, 'AF-' + yr + '-' + START_NO); assert.equal(r.body.validUntil, '31/10/2031');
+r = await handle(req('POST', '/api/cert', { action: 'issue', name: 'X', product: 'Y', purchaseDate: '01/02/2026' }, 'Bearer secret'), store, env);
+assert.equal(r.body.nr, 'AF-' + yr + '-876');
+r = await handle(req('GET', '/api/cert?nr=af-' + yr + '-875'), store, env);
+assert.equal(r.status, 200); assert.equal(r.body.name, 'Te** Kl**** SH**'); assert.equal(r.body.status, 'active'); assert.ok(!('quoteRef' in r.body));
+r = await handle(req('GET', '/api/cert?nr=AF-2026-9999'), store, env); assert.equal(r.status, 404);
+r = await handle(req('GET', '/api/cert?nr=hello'), store, env); assert.equal(r.status, 400);
+r = await handle(req('GET', '/api/cert?list=1'), store, env); assert.equal(r.status, 401);
+r = await handle(req('GET', '/api/cert?list=1', null, 'Bearer secret'), store, env); assert.equal(r.body.certs.length, 2); assert.equal(r.body.certs[0].nr, 'AF-' + yr + '-876');
+r = await handle(req('POST', '/api/cert', { action: 'revoke', nr: 'AF-' + yr + '-875' }, 'Bearer secret'), store, env); assert.equal(r.body.revoked, true);
+r = await handle(req('GET', '/api/cert?nr=AF-' + yr + '-875'), store, env); assert.equal(r.body.status, 'revoked');
+assert.equal(validUntil('29/02/2028', 5), '01/03/2033'); assert.equal(maskName('Ab'), 'A*');
+r = await handle(req('POST', '/api/cert', { action: 'issue', name: '', product: 'Y', purchaseDate: '01/02/2026' }, 'Bearer secret'), store, env); assert.equal(r.status, 400);
+console.log('✓ testet e certifikatave kaluan');

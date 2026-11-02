@@ -1,0 +1,9 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+# adresa e shkurtër e verifikimit: app.apexframes.co/v/AF-2026-875
+[[redirects]]
+  from = "/v/*"
+  to = "/verifiko.html?nr=:splat"
+  status = 200

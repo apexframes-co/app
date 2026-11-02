@@ -110,7 +110,7 @@
     home.innerHTML = `
     <header class="top"><div class="top-in">
       <div class="brand"><img src="assets/icon.svg" alt=""><div><b>Apex Frames</b><span>Arkivi i preventivave</span></div></div>
-      <div class="top-act"><button class="ghost" data-act="backup" title="Shkarko kopje rezervë të gjithë arkivit">Kopje rezervë</button><button class="ghost" data-act="restore" title="Rikthe ose bashko një kopje rezervë">Rikthe</button><button class="primary" data-act="newq">+ Preventiv i ri</button></div>
+      <div class="top-act"><button class="ghost" data-act="certs" title="Certifikatat e garancisë">Garancitë</button><button class="ghost" data-act="backup" title="Shkarko kopje rezervë të gjithë arkivit">Kopje rezervë</button><button class="ghost" data-act="restore" title="Rikthe ose bashko një kopje rezervë">Rikthe</button><button class="primary" data-act="newq">+ Preventiv i ri</button></div>
     </div></header>
     <div class="layout one"><main class="form">
       <div class="stats">
@@ -168,6 +168,7 @@
     const act = e.target.closest('[data-act]');
     if (act) {
       const a = act.dataset.act;
+      if (a === 'certs') { location.hash = '#/c'; return; }
       if (a === 'newq') return newQuote();
       if (a === 'newfolder') return newFolder();
       if (a === 'editfolder') return editFolder();
@@ -215,6 +216,11 @@
   /* ---------- routeri (#/, #/f/ID, #/q/ID) ---------- */
   function route() {
     const h = location.hash || '#/';
+    if (/^#\/c(\/|$)/.test(h)) {
+      window.AFEditor.close(); $('#app').hidden = true; home.hidden = true; $('#certs').hidden = false;
+      document.title = 'Certifikata garancie — Apex Frames'; window.AFCert.show(h); window.scrollTo(0, 0); return;
+    }
+    $('#certs').hidden = true;
     let m = h.match(/^#\/q\/(.+)$/);
     if (m && ST.getQuote(m[1])) {
       home.hidden = true; $('#app').hidden = false;

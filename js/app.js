@@ -191,7 +191,8 @@
     <section class="card"><h2>Procesi</h2><div class="grid"><div class="f s2"><label for="q_status">Statusi i preventivit</label><div class="wrap"><select id="q_status" data-qstatus>${ST.STATUSES.map(x => `<option value="${x.k}" ${Q && Q.status === x.k ? 'selected' : ''}>${x.l}</option>`).join('')}</select></div><span class="hint">Përditësoje sa herë ndryshon procesi (dërguar, pranuar, në prodhim…). Duket në arkiv.</span></div></div></section>
     <section class="card"><h2>Eksporto</h2><div class="export">
       <button type="button" class="primary" data-act="pdf">Shkarko PDF<small>Hapet dritarja e printimit → Save as PDF</small></button>
-      <button type="button" class="dark" data-act="docx">Shkarko Word (.docx)<small>Dokument i redaktueshëm</small></button></div>
+      <button type="button" class="dark" data-act="docx">Shkarko Word (.docx)<small>Dokument i redaktueshëm</small></button>
+      <button type="button" class="secondary" data-act="cert" style="grid-column:1/-1;min-height:60px">Gjenero certifikatën e garancisë<small>Nga ky preventiv, me numër dhe verifikim online</small></button></div>
       <p class="f" style="margin:10px 0 0"><span class="hint">Për PDF-në e pastër fik “Headers and footers” te dritarja e printimit.</span></p></section>
     <section class="card" style="padding:12px"><h2 style="margin-left:4px">Pamja paraprake</h2><div class="paper-wrap" id="pwrap"><div class="scale" id="pscale">${docHtml()}</div></div></section>`;
   }
@@ -392,6 +393,7 @@
       case 'next': return go(step + 1);
       case 'pdf': return exportPdf();
       case 'docx': return exportDocx();
+      case 'cert': location.hash = '#/c/new?q=' + Q.id; return;
       case 'cur': S.cur = v; break;
       case 'unit': sec.items[ii].unit = v; if (v === 'cope' || v === 'sherbim') { /* dimensionet nuk përdoren */ } break;
       case 'discmode': S.disc.mode = v; break;

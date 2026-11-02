@@ -21,6 +21,18 @@ dritare, dyer, grila, tenda, aksesorë, shërbime dhe çdo kombinim i tyre në n
 - Kërkim sipas numrit, klientit ose projektit; filtër sipas statusit dhe folderit.
 - **Kopje rezervë / Rikthe**: arkivi ruhet në shfletuesin ku punohet. Për ta kaluar në pajisje tjetër (ose si mbrojtje) shkarko kopjen rezervë dhe rikthe e atje; bashkimi nuk fshin asgjë.
 
+## Certifikata e garancisë (verifikim online)
+Arkivi → **Garancitë** → **+ Certifikatë e re** (ose nga hapi i fundit i një preventivi). Numri jepet nga serveri: **AF-VVVV-875**, pastaj 876, 877… (vazhdon pa përsëritje).
+Certifikata del në A4 me kod QR dhe adresën `app.apexframes.co/v/AF-2026-875`; klienti e verifikon online (faqja `verifiko.html`: e vlefshme, e anuluar ose e pa gjetur).
+Faqja publike tregon emrin e klientit pjesërisht (p.sh. `Te** Kl**** SH**`) për privatësi. Një certifikatë mund të anulohet nga paneli.
+
+**Vendosja në Netlify (një herë):**
+1. Sajti duhet të publikohet nga repo-ja në GitHub (Add new site → Import from Git), jo me drag-and-drop, që funksionet të ndërtohen.
+2. Site configuration → Environment variables → shto `CERT_ADMIN_TOKEN` me një fjalëkalim të gjatë sekret.
+3. Hap aplikacionin → Garancitë → fut të njëjtin çelës te “Çelësi i administratorit”. Vetëm kush e ka çelësin krijon ose anulon certifikata; verifikimi është publik.
+
+Certifikatat ruhen në Netlify Blobs (`netlify/functions/cert.mjs`), kështu që i sheh nga çdo pajisje. Provë lokale pa Netlify: `CERT_ADMIN_TOKEN=test node dev/server.mjs` → http://localhost:8124, dhe `npm test`.
+
 ## Si përdoret
 Aplikacioni është formular me 5 hapa; totali live shfaqet anash (në celular, poshtë):
 1. **Klienti** — numri i preventivit, data, vlefshmëria, monedha, klienti dhe projekti.
@@ -42,6 +54,9 @@ index.html            faqja kryesore
 css/app.css           dizajni i formularit
 css/doc.css           stili i dokumentit (pamja paraprake dhe PDF)
 js/core.js            llogaritjet, numrat me fjalë, preset-et, teksti standard
+netlify/functions    serveri i certifikatave (Netlify Function + Blobs)
+verifiko.html         faqja publike e verifikimit
+js/cert.js            certifikatat e garancisë (lista, krijimi, PDF)
 js/store.js           arkivi: foldera, numërimi, statuset, grupimi
 js/archive.js         faqja kryesore (arkivi) dhe routeri
 js/app.js             formulari me hapa dhe dokumenti për PDF
